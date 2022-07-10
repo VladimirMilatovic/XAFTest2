@@ -25,7 +25,6 @@ namespace XAFTest2.Module.BusinessObjects
             base.AfterConstruction();
         }
 
-
         bool rR;
         decimal priceNoVAT;
         decimal priceWithVAT;
@@ -51,7 +50,7 @@ namespace XAFTest2.Module.BusinessObjects
             set => SetPropertyValue(nameof(Invoice), ref invoice, value);
         }
 
-        [DevExpress.Xpo.Aggregated]
+        [DataSourceProperty("Invoice.Company.Products")]
         public Product Product
         {
             get => product;

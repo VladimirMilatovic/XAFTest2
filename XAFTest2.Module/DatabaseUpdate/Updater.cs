@@ -30,7 +30,7 @@ public class Updater : ModuleUpdater
         //    theObject = ObjectSpace.CreateObject<DomainObject1>();
         //    theObject.Name = name;
         //}
-        Random rnd = new();
+        //Random rnd = new();
         //for (int i = 1; i < 101; i++)
         //{
         //    Company company = ObjectSpace.CreateObject<Company>();
@@ -88,6 +88,7 @@ public class Updater : ModuleUpdater
         //        for (int i = 1; i < 101; i++)
         //        {
         //            Invoice invoice = ObjectSpace.CreateObject<Invoice>();
+        //            invoice.Company = company;
         //            invoice.Department = department;
         //            invoice.Customer = ObjectSpace.GetObjects<Company>().Where(x => x.Oid == rnd.Next(1, 100)).FirstOrDefault();
         //            invoice.InvoiceDate = RandomDateFromTo.GetRandomDate(DateTime.Parse("2020-01-01"), DateTime.Parse("2022-12-31"));

@@ -11,12 +11,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using XAFTest2.Module.Helper;
 
 namespace XAFTest2.Module.BusinessObjects
 {
     [DefaultClassOptions]
     public class Invoice : XPObject
-    { 
+    {
         public Invoice(Session session)
             : base(session)
         {
@@ -26,25 +27,52 @@ namespace XAFTest2.Module.BusinessObjects
             base.AfterConstruction();
         }
 
+        protected override void OnSaving()
+        {
 
+            var result = InvoiceNextSequenceNumber.GetNext("R[#]", Session, this);
+            InvoiceNumber = result.InvoiceNumber;
+            InvoiceSequenceNumber = result.SequenceNumber;
+
+            base.OnSaving();
+        }
+
+        InvoiceType invoiceType= InvoiceType.Product;
+        int invoiceSequenceNumber;
+        int year;
         Company company;
         string invoiceNumber;
         Department department;
         Company bayer;
         DateTime invoiceDate;
 
-        //[Association("Company-Invoices")]
+        [Indexed("Year;Department;InvoiceSequenceNumber", Unique = true, Name = "Invoice_CompanyYearDepartmentInvoiceSequenceNumber_UniqueIndex")]
         public Company Company
         {
             get => company;
             set => SetPropertyValue(nameof(Company), ref company, value);
         }
 
+        [Browsable(false)]
+        public int Year
+        {
+            get => year;
+            set => SetPropertyValue(nameof(Year), ref year, value);
+        }
+
+
         [DataSourceProperty("Company.Departments")]
         public Department Department
         {
             get => department;
             set => SetPropertyValue(nameof(Department), ref department, value);
+        }
+
+        [Browsable(false)]
+        public int InvoiceSequenceNumber
+        {
+            get => invoiceSequenceNumber;
+            set => SetPropertyValue(nameof(InvoiceSequenceNumber), ref invoiceSequenceNumber, value);
         }
 
         [Size(SizeAttribute.DefaultStringMappingFieldSize)]
@@ -57,7 +85,14 @@ namespace XAFTest2.Module.BusinessObjects
         public DateTime InvoiceDate
         {
             get => invoiceDate;
-            set => SetPropertyValue(nameof(InvoiceDate), ref invoiceDate, value);
+            set { SetPropertyValue(nameof(InvoiceDate), ref invoiceDate, value); Year = value.Year; }
+        }
+
+        [ImmediatePostData]
+        public InvoiceType InvoiceType
+        {
+            get => invoiceType;
+            set => SetPropertyValue(nameof(InvoiceType), ref invoiceType, value);
         }
 
         public Company Customer
@@ -74,8 +109,19 @@ namespace XAFTest2.Module.BusinessObjects
                 return GetCollection<InvoiceDetail>(nameof(InvoiceDetails));
             }
         }
+        
+        [Association("Invoice-InvoiceServiceDetails"), DevExpress.Xpo.Aggregated]
+        public XPCollection<InvoiceServiceDetail> InvoiceServiceDetails
+        {
+            get
+            {
+                return GetCollection<InvoiceServiceDetail>(nameof(InvoiceServiceDetails));
+            }
+        }
 
-        
-        
+
+
     }
+
+    public enum InvoiceType { Product, Service};
 }

@@ -2,6 +2,13 @@
 <Application Title="XAFTest2">
   <BOModel>
     <Class Name="DevExpress.Persistent.BaseImpl.PermissionPolicy.PermissionPolicyUser" Caption="Base User" />
+    <Class Name="XAFTest2.Module.BusinessObjects.Invoice">
+      <AppearanceRules>
+        <AppearanceRule Id="InvoiceTypeDisable" Enabled="False" TargetItems="InvoiceType" Criteria="[InvoiceDetails][].Count() &gt; 0 Or [InvoiceServiceDetails][].Count() &gt; 0" IsNewNode="True" />
+        <AppearanceRule Id="InvoiceTypeProduct" Criteria="[InvoiceType] = ##Enum#XAFTest2.Module.BusinessObjects.InvoiceType,Product#" Visibility="Hide" TargetItems="InvoiceServiceDetails" IsNewNode="True" />
+        <AppearanceRule Id="InvoiceTypeService" Visibility="Hide" Criteria="[InvoiceType] = ##Enum#XAFTest2.Module.BusinessObjects.InvoiceType,Service#" TargetItems="InvoiceDetails" IsNewNode="True" />
+      </AppearanceRules>
+    </Class>
   </BOModel>
   <Options DataAccessMode="Server">
     <LayoutManagerOptions RequiredFieldMark="*" />
@@ -12,5 +19,64 @@
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
+    <DetailView Id="Invoice_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="12.984496124031008">
+            <LayoutGroup Id="Invoice" RelativeSize="100">
+              <LayoutGroup Id="Invoice_col1" RelativeSize="49.85994397759104">
+                <LayoutItem Id="Department" Index="0" RelativeSize="36.95652173913044" />
+                <LayoutItem Id="InvoiceType" ViewItem="InvoiceType" Index="1" RelativeSize="26.08695652173913" IsNewNode="True" />
+                <LayoutItem Id="InvoiceNumber" Index="2" RelativeSize="36.95652173913044" />
+                <LayoutItem Id="Company" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Invoice_col2" RelativeSize="50.14005602240896">
+                <LayoutItem Id="InvoiceDate" RelativeSize="36.95652173913044" />
+                <LayoutItem Id="Customer" RelativeSize="63.04347826086956" Index="1" />
+                <LayoutItem Id="InvoiceType" RelativeSize="27.272727272727273" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+            <LayoutGroup Id="XPObject" RelativeSize="22.929936305732483" Caption="Oid" Removed="True">
+              <LayoutItem Id="Oid" RelativeSize="100" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="InvoiceDetails" ShowCaption="True" Caption="Invoice Details" Index="1" RelativeSize="14.147286821705427" IsNewNode="True">
+            <LayoutItem Id="InvoiceDetails" ViewItem="InvoiceDetails" Index="0" RelativeSize="100" IsNewNode="True" />
+          </LayoutGroup>
+          <LayoutGroup Id="InvoiceServiceDetails" ShowCaption="True" Caption="Invoice Service Details" Index="2" RelativeSize="72.86821705426357" IsNewNode="True">
+            <LayoutItem Id="InvoiceServiceDetails" ViewItem="InvoiceServiceDetails" Index="0" RelativeSize="100" IsNewNode="True" />
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" Removed="True" />
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Product_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Product" RelativeSize="13.534675615212528">
+              <LayoutGroup Id="Product_col1" RelativeSize="50">
+                <LayoutItem Id="Code" RelativeSize="36.36363636363637" />
+                <LayoutItem Id="Name" RelativeSize="27.272727272727273" />
+                <LayoutItem Id="VatRate" RelativeSize="36.36363636363637" />
+              </LayoutGroup>
+              <LayoutGroup Id="Product_col2" RelativeSize="50">
+                <LayoutItem Id="UnitPrice" RelativeSize="36.36363636363637" />
+                <LayoutItem Id="UnitOfMeasure" RelativeSize="63.63636363636363" />
+              </LayoutGroup>
+            </LayoutGroup>
+            <LayoutGroup Id="XPObject" Caption="Oid" RelativeSize="86.46532438478748">
+              <LayoutItem Id="Oid" Removed="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Product_LookupListView">
+      <Columns>
+        <ColumnInfo Id="Code" PropertyName="Code" Index="0" IsNewNode="True" />
+        <ColumnInfo Id="Name" Index="1" />
+      </Columns>
+    </ListView>
   </Views>
 </Application>

@@ -59,9 +59,6 @@ namespace XAFTest2.Module.BusinessObjects
             set => SetPropertyValue(nameof(BookKeeping), ref bookKeeping, value);
         }
 
-
-
-
         [Association("Company-Addresses"), DevExpress.Xpo.Aggregated]
         public XPCollection<CompanyAddress> Addresses
         {
